@@ -3,5 +3,3 @@
 
 cpuminer_opt_version: v3.8.8.1
 cpuminer_opt_base_dir: /root/cpuminer-opt
-cpuminer_opt_build_dir: "{{ cpuminer_opt_base_dir }}/build"
-cpuminer_opt_bin_dir: "{{ cpuminer_opt_build_dir }}/bin"

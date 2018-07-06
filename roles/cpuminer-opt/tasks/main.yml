@@ -1,5 +1,5 @@
 ---
-# tasks file for ansible-xmr-stak
+# tasks file for ansible-cpuminer-opt
 
 #- name: Update apt.
 #  apt:

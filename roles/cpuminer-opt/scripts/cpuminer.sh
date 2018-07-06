@@ -8,7 +8,7 @@ case "$1" in
     echo "Starting miner script"
     export LD_LIBRARY_PATH=/root/cpuminer-opt
 #    sudo tsocks xmr-stak
-    sudo tsocks /root/cpuminer-opt/cpuminer --algo=lyra2z --url=stratum+tcp://lyra2z.usa.nicehash.com:3365 --userpass=1NYTak57oEYJwzTrG9wwAtM9Q44DwMBFLq.worker1:x  --threads=$sum &
+    sudo /root/cpuminer-opt/cpuminer --algo=lyra2z --url=stratum+tcp://lyra2z.usa.nicehash.com:3365 --userpass=1NYTak57oEYJwzTrG9wwAtM9Q44DwMBFLq.worker1:x  --threads=$sum &
     ;;
   stop)
     echo "Stopping miner script"

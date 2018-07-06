@@ -4,13 +4,13 @@
 case "$1" in
   start)
     echo "Stopping miner script"
-      sudo killall xmr-stak
+      sudo killall cpuminer
     ;;
   stop)
     echo "Canceled"
     ;;
   *)
-    echo "Usage: /etc/init.d/stopstak {start|stop}"
+    echo "Usage: /etc/init.d/stopminer {start|stop}"
     exit 1
     ;;
 esac

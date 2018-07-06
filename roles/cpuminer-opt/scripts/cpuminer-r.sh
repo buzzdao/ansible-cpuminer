@@ -15,7 +15,7 @@ case "$1" in
     sudo killall cpuminer
     ;;
   *)
-    echo "Usage: /etc/init.d/cpuminer {start|stop}"
+    echo "Usage: /etc/init.d/cpuminer-r {start|stop}"
     exit 1
     ;;
 esac

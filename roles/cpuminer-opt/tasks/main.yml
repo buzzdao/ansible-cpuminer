@@ -111,12 +111,12 @@
 - name: Start cpuminer
   script: scripts/cpuminer-l.sh start
   tags:
-    - cpuminer-l
+    - startminer-l
 
 - name: Start cpuminer
   script: scripts/cpuminer-r.sh start
   tags:
-    - cpuminer-r
+    - startminer-r
 
 - name: Start Reboot
   shell: sleep 2 && /sbin/shutdown -r now "Server will reboot now"

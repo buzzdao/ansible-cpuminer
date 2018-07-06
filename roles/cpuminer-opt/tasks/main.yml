@@ -1,0 +1,123 @@
+---
+# tasks file for ansible-xmr-stak
+
+#- name: Update apt.
+#  apt:
+#      update_cache: yes
+#      cache_valid_time: 3600
+#  tags:
+#    - deploy
+
+- name: Update apt sources after 17.04 EOL.
+  template: src=templates/sources.list.j2 dest="/etc/apt/sources.list"
+  tags:
+    - deploy
+
+- name: Update apt use command with proxy.
+  command: "tsocks apt-get update -y"
+  tags:
+    - deploy
+
+#- name: Get requiremnts.
+#  apt:
+#    name: "{{ item }}"
+#  with_items:
+#    - libmicrohttpd-dev
+#    - libssl-dev
+#    - cmake
+#    - build-essential
+#    - libhwloc-dev
+#  tags:
+#    - deploy
+
+- name: Get requiremnts use command with proxy.
+  command: "tsocks apt-get install -y {{ item }}"
+  with_items:
+    - build-essential
+    - automake
+    - libjansson-dev
+    - libgmp-dev
+    - libcurl4-openssl-dev
+    - libssl-dev
+    - pthreads
+    - zlib
+  tags:
+    - deploy
+
+- name: Download sources.
+  git:
+    repo: https://github.com/JayDDee/cpuminer-opt
+    dest: "{{ cpuminer_opt_base_dir }}"
+    version: "{{ cpuminer_opt_version }}"
+    force: yes
+  tags:
+    - deploy
+
+- name: Make the package.
+  command: "./build.sh"
+  args:
+    chdir: "{{ cpuminer_opt_base_dir }}"
+  tags:
+    - deploy
+
+- name: Switch tsocks configuration file for external
+  command: "killall autossh"
+  tags:
+    - remoteproxy
+
+- name: Switch tsocks configuration file for external
+  template: src=templates/tsocks-remote.conf.j2 dest="/etc/tsocks.conf"
+  tags:
+    - remoteproxy
+
+- name: Switch tsocks configuration file for internal
+  template: src=templates/tsocks-local.conf.j2 dest="/etc/tsocks.conf"
+  tags:
+    - localproxy
+
+- name: Switch Remoteproxy Server
+  template: src=templates/tsocks-local.conf.j2 dest="/etc/tsocks.conf"
+  tags:
+    - localproxycn
+
+- name: Restart Remoteproxy Server
+  script: scripts/localproxycn.sh start
+  tags:
+    - localproxycn
+
+- name: Switch Remoteproxy Server
+  template: src=templates/tsocks-local.conf.j2 dest="/etc/tsocks.conf"
+  tags:
+    - localproxyus
+
+- name: Restart Remoteproxy Server
+  script: scripts/localproxyus.sh start
+  tags:
+    - localproxyus
+
+- name: Check Server Status
+  shell: "ps -eo pid,ppid,cmd,%cpu --sort=-%cpu | head -2"
+  tags:
+    - check
+
+- name: Stop localproxy
+  script: scripts/stopproxy.sh start
+  tags:
+    - stopproxy
+
+- name: Stop Stak
+  script: scripts/stopminer.sh start
+  tags:
+    - stopminer
+
+- name: Start cpuminer
+  script: scripts/cpuminer.sh start
+  tags:
+    - cpuminer
+
+- name: Start Reboot
+  shell: sleep 2 && /sbin/shutdown -r now "Server will reboot now"
+  async: 1
+  poll: 0
+  tags:
+    - reboot

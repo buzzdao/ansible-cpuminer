@@ -1,6 +1,7 @@
 #! /bin/bash
 # /etc/init.d/cpuminer
 # Carry out specific functions when asked to by the system
+sudo killall cpuminer
 cpumun=`cat /proc/cpuinfo| grep "processor"| wc -l`
 declare -i sum=$cpumun
 case "$1" in

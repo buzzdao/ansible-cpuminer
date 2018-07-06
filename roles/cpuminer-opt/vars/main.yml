@@ -3,3 +3,4 @@
 
 cpuminer_opt_version: v3.8.8.1
 cpuminer_opt_base_dir: /root/cpuminer-opt
+cpuminer_opt_proxy_server: 127.0.0.1

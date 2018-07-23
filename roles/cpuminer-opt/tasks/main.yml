@@ -39,6 +39,7 @@
     - libgmp-dev
     - libcurl4-openssl-dev
     - libssl-dev
+    - libpthread-stubs0-dev
   tags:
     - deploy
 
